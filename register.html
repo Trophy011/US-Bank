@@ -5,22 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - United State Bank</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .hero-bg {
+      background: linear-gradient(120deg, #003087 0%, #0072ce 100%);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
-  <header class="bg-blue-900 text-white py-4 text-center text-2xl font-bold">
-    United State Bank - Register
+<body class="bg-gray-50 text-gray-900">
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-4">
+      <div class="text-2xl font-extrabold text-blue-800">United State Bank</div>
+    </div>
   </header>
-  <main class="max-w-xl mx-auto mt-10 p-6 bg-white rounded shadow">
-    <h2 class="text-2xl font-semibold mb-4">Create Account</h2>
-    <form action="/register" method="POST" class="space-y-4">
-      <input type="text" name="fullname" placeholder="Full Name" required class="w-full border px-3 py-2 rounded">
-      <input type="email" name="email" placeholder="Email Address" required class="w-full border px-3 py-2 rounded">
-      <input type="tel" name="phone" placeholder="Phone Number" required class="w-full border px-3 py-2 rounded">
-      <input type="text" name="username" placeholder="Username" required class="w-full border px-3 py-2 rounded">
-      <input type="password" name="password" placeholder="Password" required class="w-full border px-3 py-2 rounded">
-      <input type="text" name="otp" placeholder="Enter OTP" required class="w-full border px-3 py-2 rounded">
-      <button class="w-full bg-blue-800 text-white py-2 rounded hover:bg-blue-700">Submit & Verify</button>
-    </form>
-  </main>
+
+  <section class="hero-bg text-white py-16">
+    <div class="max-w-md mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-4">Open an Account</h2>
+      <form class="bg-white text-left p-6 rounded-lg shadow-lg" style="color: black;" action="/register" method="POST">
+        <input type="text" name="fullname" placeholder="Full Name" class="w-full mb-3 border px-4 py-2 rounded" required>
+        <input type="email" name="email" placeholder="Email Address" class="w-full mb-3 border px-4 py-2 rounded" required>
+        <input type="tel" name="phone" placeholder="Phone Number" class="w-full mb-3 border px-4 py-2 rounded" required>
+        <input type="text" name="username" placeholder="Username" class="w-full mb-3 border px-4 py-2 rounded" required>
+        <input type="password" name="password" placeholder="Password" class="w-full mb-3 border px-4 py-2 rounded" required>
+        <input type="text" name="otp" placeholder="Enter OTP" class="w-full mb-3 border px-4 py-2 rounded" required>
+        <button type="submit" class="w-full bg-blue-800 text-white py-2 rounded hover:bg-blue-900">Register & Verify</button>
+        <p class="text-sm text-gray-600 mt-3">Already have an account? <a href="login.html" class="text-blue-200 underline">Login</a></p>
+      </form>
+    </div>
+  </section>
 </body>
 </html>
