@@ -1,28 +1,29 @@
-
 <?php
 require 'config.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $fullname = $_POST['fullname'];
-  $email = $_POST['email'];
-  $phone = $_POST['phone'];
-  $username = $_POST['username'];
-  $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-  $otp = $_POST['otp'];
-
-  if ($otp !== '123456') {
-    die("Invalid OTP. Please use 123456.");
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $entered_otp = $_POST['otp'];
+  if ($entered_otp != $_SESSION['otp']) {
+    die("Incorrect OTP. Please try again.");
   }
 
+  $data = $_SESSION['temp_user'];
+  $fullname = $data['fullname'];
+  $email = $data['email'];
+  $phone = $data['phone'];
+  $username = $data['username'];
+  $password = password_hash($data['password'], PASSWORD_DEFAULT);
+
   $account_number = '10' . rand(100000000, 999999999);
-  $stmt = $conn->prepare("INSERT INTO users (fullname, email, phone, username, password, account_number, balance, currency) VALUES (?, ?, ?, ?, ?, ?, 0, 'USD')");
-  $stmt->bind_param("ssssss", $fullname, $email, $phone, $username, $password, $account_number);
+  $balance = 0;
+  $currency = 'USD';
+
+  $stmt = $conn->prepare("INSERT INTO users (fullname, email, phone, username, password, account_number, balance, currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("ssssssis", $fullname, $email, $phone, $username, $password, $account_number, $balance, $currency);
 
   if ($stmt->execute()) {
-    $subject = "Welcome to United State Bank";
-    $message = "Hi $fullname,
-Your Account Number is $account_number.";
-    mail($email, $subject, $message);
+    mail($email, "Welcome to United State Bank", "Your account number is $account_number.");
+    unset($_SESSION['otp'], $_SESSION['temp_user']);
     header("Location: login.html");
   } else {
     echo "Error: " . $stmt->error;
