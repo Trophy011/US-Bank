@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
   exit;
 }
 
-// Get latest data from DB
+// Get latest user data
 $account_number = $_SESSION['user']['account_number'];
 $stmt = $conn->prepare("SELECT * FROM users WHERE account_number = ?");
 $stmt->bind_param("s", $account_number);
@@ -15,7 +15,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-// Update session
+// Refresh session
 $_SESSION['user'] = $user;
 ?>
 
