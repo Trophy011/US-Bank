@@ -1,11 +1,12 @@
 <?php
+session_start();
 require 'config.php';
+
+// Show errors
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $fullname = trim($_POST['fullname']);
   $email = trim($_POST['email']);
   $phone = trim($_POST['phone']);
@@ -13,33 +14,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
   $otp = trim($_POST['otp']);
 
-  // OTP check
-  if (empty($otp) || $otp !== $_SESSION['otp']) {
-    die("Invalid OTP. Please check your email and use the OTP sent.");
+  // Check OTP
+  if (!isset($_SESSION['otp']) || $otp !== $_SESSION['otp']) {
+    die("❌ Invalid OTP. Please check your email.");
   }
 
-  // Generate fake account number and default balance
+  // Generate account number and initial balance
   $account_number = '10' . rand(100000000, 999999999);
   $balance = 0;
 
-  // Insert into users table
+  // Insert user
   $stmt = $conn->prepare("INSERT INTO users (fullname, email, phone, username, password, account_number, balance) VALUES (?, ?, ?, ?, ?, ?, ?)");
   $stmt->bind_param("ssssssd", $fullname, $email, $phone, $username, $password, $account_number, $balance);
 
   if ($stmt->execute()) {
     // Send welcome email
-    $subject = "Welcome to United State Bank";
-    $message = "Hi $fullname,\n\nWelcome to United State Bank.\nYour Account Number is: $account_number\n\nRegards,\nUSB Team";
+    $subject = "🎉 Welcome to United State Bank";
+    $message = "Hello $fullname,\n\nWelcome to USB!\nYour Account Number: $account_number\n\nThank you!";
     mail($email, $subject, $message);
 
-    // Clear OTP session
     unset($_SESSION['otp']);
-
-    // Redirect to login
-    header("Location: login.html");
+    header("Location: login.php");
     exit;
   } else {
-    echo "Error: " . $stmt->error;
+    die("❌ Error: " . $stmt->error);
   }
 }
 ?>
