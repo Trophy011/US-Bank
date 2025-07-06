@@ -1,38 +1,38 @@
 <?php
 require 'config.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $fullname = $_POST['fullname'];
-  $email = $_POST['email'];
-  $phone = $_POST['phone'];
-  $username = $_POST['username'];
+  $fullname = trim($_POST['fullname']);
+  $email = trim($_POST['email']);
+  $phone = trim($_POST['phone']);
+  $username = trim($_POST['username']);
   $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-  $otp = rand(100000, 999999);
+  $otp = trim($_POST['otp']);
+
+  if (empty($otp) || $otp !== $_SESSION['otp']) {
+    die("Invalid OTP. Please check your email and use the OTP sent.");
+  }
+
+  // Auto-generate account number
   $account_number = '10' . rand(100000000, 999999999);
+  $balance = 0;
 
-  // Log registration attempt
-  $ip = $_SERVER['REMOTE_ADDR'];
-  $agent = $_SERVER['HTTP_USER_AGENT'];
-  $log = $conn->prepare("INSERT INTO registration_logs (email, ip_address, user_agent) VALUES (?, ?, ?)");
-  $log->bind_param("sss", $email, $ip, $agent);
-  $log->execute();
+  $stmt = $conn->prepare("INSERT INTO users (fullname, email, phone, username, password, account_number, balance) VALUES (?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("ssssssd", $fullname, $email, $phone, $username, $password, $account_number, $balance);
 
-  // Notify admin
-  $admin_email = "youradmin@example.com";
-  $subject = "New Signup Detected - United State Bank";
-  $message = "A new user signed up:\n\nFullname: $fullname\nEmail: $email\nUsername: $username\nIP: $ip\n\nUSB Portal";
-  mail($admin_email, $subject, $message);
+  if ($stmt->execute()) {
+    // Send welcome email
+    $subject = "Welcome to United State Bank";
+    $message = "Hi $fullname,\n\nWelcome to United State Bank. Your Account Number is: $account_number\n\nRegards,\nUSB Team";
+    mail($email, $subject, $message);
 
-  // Store user data in session
-  $_SESSION['otp'] = $otp;
-  $_SESSION['register'] = compact('fullname', 'email', 'phone', 'username', 'password', 'account_number');
-
-  // Send OTP to user
-  $subject = "Your OTP Code - United State Bank";
-  $message = "Hi $fullname,\n\nYour OTP code is: $otp\n\nUse this to complete your account registration.";
-  mail($email, $subject, $message);
-
-  header("Location: verify_otp.php");
-  exit;
+    unset($_SESSION['otp']);
+    header("Location: login.html");
+    exit;
+  } else {
+    echo "Error: " . $stmt->error;
+  }
 }
 ?>
