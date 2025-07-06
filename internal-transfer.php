@@ -1,3 +1,0 @@
-<?php
-// Internal transfer logic
-?>
