@@ -1,0 +1,7 @@
+CREATE TABLE transfers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sender_account VARCHAR(20),
+  receiver_account VARCHAR(20),
+  amount DECIMAL(12,2),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
