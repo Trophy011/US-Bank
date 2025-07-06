@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - United State Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <header class="bg-blue-900 text-white py-4 text-center text-xl font-bold">
+    Welcome, Admin - United State Bank
+  </header>
+  <main class="max-w-4xl mx-auto mt-6 p-6">
+    <section class="mb-6">
+      <h2 class="text-xl font-semibold text-blue-800">Admin Account Info</h2>
+      <div class="bg-white p-4 rounded shadow mt-2">
+        <p>Email: godswilluzoma517@gmail.com</p>
+        <p>Balance: $100,000.00</p>
+      </div>
+    </section>
+    <section class="mb-6">
+      <h2 class="text-xl font-semibold text-blue-800">Internal Transfer</h2>
+      <form action="/transfer/internal" method="POST" class="bg-white p-4 rounded shadow space-y-3">
+        <input type="text" name="to_account" placeholder="Recipient Account Number" required class="w-full border px-3 py-2 rounded">
+        <input type="number" name="amount" placeholder="Amount" required class="w-full border px-3 py-2 rounded">
+        <button class="w-full bg-blue-800 text-white py-2 rounded hover:bg-blue-700">Transfer Internally</button>
+      </form>
+    </section>
+    <section>
+      <h2 class="text-xl font-semibold text-blue-800">Global Transfer</h2>
+      <form action="/transfer/global" method="POST" class="bg-white p-4 rounded shadow space-y-3">
+        <input type="text" name="recipient_name" placeholder="Recipient Name" required class="w-full border px-3 py-2 rounded">
+        <input type="text" name="bank_name" placeholder="Bank Name" required class="w-full border px-3 py-2 rounded">
+        <input type="text" name="swift" placeholder="SWIFT/BIC" required class="w-full border px-3 py-2 rounded">
+        <input type="text" name="iban" placeholder="IBAN or Account Number" required class="w-full border px-3 py-2 rounded">
+        <input type="number" name="amount" placeholder="Amount (USD)" required class="w-full border px-3 py-2 rounded">
+        <button class="w-full bg-blue-800 text-white py-2 rounded hover:bg-blue-700">Transfer Globally</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
