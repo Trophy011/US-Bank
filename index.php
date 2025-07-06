@@ -1,10 +1,6 @@
 <?php
 session_start();
-$isAdmin = false;
-
-if (isset($_SESSION['user']) && isset($_SESSION['user']['email'])) {
-  $isAdmin = ($_SESSION['user']['email'] === 'godswilluzoma517@gmail.com');
-}
+$isAdmin = isset($_SESSION['user']) && $_SESSION['user']['email'] === 'godswilluzoma517@gmail.com';
 ?>
 
 <!DOCTYPE html>
