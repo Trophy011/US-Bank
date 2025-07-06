@@ -1,1 +1,0 @@
--- SQL for creating users and transfers table and inserting admin/Anna
