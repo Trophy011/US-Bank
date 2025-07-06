@@ -1,47 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - United State Bank</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
 <body class="bg-gray-100">
-  <div class="max-w-md mx-auto mt-16 bg-white p-8 rounded shadow">
+
+  <div class="max-w-md mx-auto mt-20 bg-white p-8 rounded shadow-lg">
     <h2 class="text-3xl font-bold text-center text-blue-800 mb-6">Login to Your Account</h2>
 
-    <!-- Optional error message block - rendered by PHP -->
+    <!-- Error message placeholder -->
     <?php if (isset($_GET['error'])): ?>
-      <p class="text-red-600 mb-4 text-center"><?= htmlspecialchars($_GET['error']) ?></p>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
+        <?= htmlspecialchars($_GET['error']) ?>
+      </div>
     <?php endif; ?>
 
     <form action="login.php" method="POST" class="space-y-5">
-      <input 
-        type="text" 
-        name="username" 
-        placeholder="Username or Email" 
-        required 
-        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500">
-
-      <input 
-        type="password" 
-        name="password" 
-        placeholder="Password" 
-        required 
-        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500">
-
-      <button 
-        type="submit" 
-        class="w-full bg-blue-800 hover:bg-blue-900 text-white font-semibold py-2 rounded">
+      <input type="text" name="username" placeholder="Username or Email" required class="w-full px-4 py-2 border border-gray-300 rounded">
+      <input type="password" name="password" placeholder="Password" required class="w-full px-4 py-2 border border-gray-300 rounded">
+      <button type="submit" class="w-full bg-blue-800 hover:bg-blue-900 text-white font-semibold py-2 rounded">
         Login
       </button>
     </form>
 
-    <div class="text-center mt-4">
-      <p class="text-sm text-gray-600">Don’t have an account? 
-        <a href="register.html" class="text-blue-700 hover:underline">Register</a>
-      </p>
-    </div>
+    <p class="mt-6 text-center text-gray-600">
+      Don’t have an account? 
+      <a href="register.html" class="text-blue-700 hover:underline">Register here</a>
+    </p>
   </div>
+
 </body>
 </html>
