@@ -27,8 +27,11 @@ $isAdmin = isset($_SESSION['user']['email']) && $_SESSION['user']['email'] === '
         <?php endif; ?>
       </nav>
       <div class="flex space-x-3">
-        <a href="login.html" class="text-blue-800 font-semibold hover:underline">Log In</a>
-        <a href="register.html" class="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-900">Open Account</a>
+  <a href="login.html" class="text-blue-800 font-semibold hover:underline">Log In</a>
+  <a href="register.html" class="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-900">Open Account</a>
+  <?php if (isset($_SESSION['user']) && $_SESSION['user']['email'] === 'godswilluzoma517@gmail.com'): ?>
+    <a href="admin/index.php" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Admin Panel</a>
+  <?php endif; ?>
       </div>
     </div>
   </header>
