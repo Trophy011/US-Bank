@@ -1,6 +1,8 @@
 <?php
 session_start();
-$isAdmin = isset($_SESSION['user']) && $_SESSION['user']['email'] === 'godswilluzoma517@gmail.com';
+require_once 'config.php'; // Ensure this includes database connection
+$isLoggedIn = isset($_SESSION['user']);
+$isAdmin = $isLoggedIn && $_SESSION['user']['email'] === 'godswilluzoma517@gmail.com';
 ?>
 
 <!DOCTYPE html>
@@ -29,9 +31,9 @@ $isAdmin = isset($_SESSION['user']) && $_SESSION['user']['email'] === 'godswillu
         <?php endif; ?>
       </nav>
 
-      <!-- Buttons -->
+      <!-- Login / Register / Dashboard Buttons -->
       <div class="flex space-x-3">
-        <?php if (isset($_SESSION['user'])): ?>
+        <?php if ($isLoggedIn): ?>
           <a href="dashboard.php" class="text-blue-800 font-semibold hover:underline">Dashboard</a>
           <a href="logout.php" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Logout</a>
         <?php else: ?>
@@ -42,7 +44,18 @@ $isAdmin = isset($_SESSION['user']) && $_SESSION['user']['email'] === 'godswillu
     </div>
   </header>
 
-  <!-- You can add the main content of your home page below this -->
+  <!-- Home Page Content Example -->
+  <main class="max-w-7xl mx-auto p-8">
+    <h1 class="text-3xl font-bold text-blue-900 mb-4">Welcome to United State Bank</h1>
+    <p class="text-gray-700">Your trusted partner for digital and secure financial solutions.</p>
+
+    <?php if ($isLoggedIn): ?>
+      <div class="mt-6 bg-green-50 p-4 border border-green-300 text-green-700 rounded">
+        Logged in as: <strong><?= htmlspecialchars($_SESSION['user']['fullname']) ?></strong><br>
+        Account: <strong><?= htmlspecialchars($_SESSION['user']['account_number']) ?></strong>
+      </div>
+    <?php endif; ?>
+  </main>
 
 </body>
 </html>
