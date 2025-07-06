@@ -1,56 +1,47 @@
-<?php
-require 'config.php';
-session_start();
-
-$error = "";
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $username = trim($_POST['username']);
-  $password = $_POST['password'];
-
-  $stmt = $conn->prepare("SELECT * FROM users WHERE username=? OR email=?");
-  $stmt->bind_param("ss", $username, $username);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $user = $result->fetch_assoc();
-
-  if ($user && password_verify($password, $user['password'])) {
-    $_SESSION['user'] = $user;
-
-    // If admin, redirect to admin panel
-    if ($user['email'] === 'godswilluzoma517@gmail.com') {
-      header("Location: admin/index.php");
-    } else {
-      header("Location: dashboard.php");
-    }
-    exit;
-  } else {
-    $error = "Invalid username or password.";
-  }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - United State Bank</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
 <body class="bg-gray-100">
-  <div class="max-w-md mx-auto mt-12 bg-white p-8 rounded shadow">
-    <h2 class="text-2xl font-bold text-center text-blue-800 mb-6">Login to Your Account</h2>
+  <div class="max-w-md mx-auto mt-16 bg-white p-8 rounded shadow">
+    <h2 class="text-3xl font-bold text-center text-blue-800 mb-6">Login to Your Account</h2>
 
-    <?php if ($error): ?>
-      <p class="text-red-600 mb-4 text-center"><?= htmlspecialchars($error) ?></p>
+    <!-- Optional error message block - rendered by PHP -->
+    <?php if (isset($_GET['error'])): ?>
+      <p class="text-red-600 mb-4 text-center"><?= htmlspecialchars($_GET['error']) ?></p>
     <?php endif; ?>
 
-    <form action="login.php" method="POST" class="space-y-4">
-      <input type="text" name="username" placeholder="Username or Email" required class="w-full px-4 py-2 border rounded">
-      <input type="password" name="password" placeholder="Password" required class="w-full px-4 py-2 border rounded">
-      <button type="submit" class="w-full bg-blue-800 text-white py-2 rounded">Login</button>
+    <form action="login.php" method="POST" class="space-y-5">
+      <input 
+        type="text" 
+        name="username" 
+        placeholder="Username or Email" 
+        required 
+        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500">
+
+      <input 
+        type="password" 
+        name="password" 
+        placeholder="Password" 
+        required 
+        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500">
+
+      <button 
+        type="submit" 
+        class="w-full bg-blue-800 hover:bg-blue-900 text-white font-semibold py-2 rounded">
+        Login
+      </button>
     </form>
+
+    <div class="text-center mt-4">
+      <p class="text-sm text-gray-600">Don’t have an account? 
+        <a href="register.html" class="text-blue-700 hover:underline">Register</a>
+      </p>
+    </div>
   </div>
 </body>
 </html>
